@@ -269,8 +269,4 @@ lsof -ti:5001 | xargs kill -9
 
 ## Contexto
 
-Desenvolvido para uso interno da agência **[Velo](https://velodigital.com.br)** para gerenciar campanhas de Google Ads de clientes hoteleiros (hotéis, pousadas, resorts) no Brasil.
-
-- Moeda sempre em BRL
-- Métricas-foco: CPA de reserva, ROAS de campanha, CTR de anúncios de hospedagem
-- Acesso via Manager Account (MCC) da Velo
+Desenvolvido para uso interno da agência **[Velo](https://velodigital.com.br)** para gerenciar campanhas de Google Ads com IA, consultar dados em tempo real e gerar relatórios de performance via linguagem natural — sem precisar abrir nenhum painel.

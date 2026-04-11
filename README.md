@@ -132,7 +132,7 @@ Liste todas as campanhas ativas da conta 123-456-7890
 Qual foi o ROAS das campanhas do último mês?
 Compare a performance por device nos últimos 30 dias
 Mostre a série diária de cliques e custo desta semana
-Qual foi o CPA médio de reserva no mês passado?
+Qual foi o CPA médio de conversão no mês passado?
 ```
 
 **Palavras-chave e termos de busca:**

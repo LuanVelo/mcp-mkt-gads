@@ -93,33 +93,63 @@ O servidor Google Ads MCP estará disponível na próxima sessão.
 
 ---
 
-## Uso Diário
+## Como usar no Terminal
 
-Após a primeira configuração, o MCP sobe automaticamente junto com o Claude Desktop.
+Após a primeira configuração, você pode iniciar e testar o servidor direto pelo terminal.
 
-Se precisar testar o servidor manualmente:
-
+**Iniciar o servidor:**
 ```bash
 ./start.sh
 ```
 
-O script detecta se o `config.json` já existe:
+O script detecta automaticamente se o `config.json` já existe:
 - **Existe** → inicia o MCP Server direto
 - **Não existe** → abre o setup UI novamente
 
+**Testar o servidor em modo dev (com inspetor interativo):**
+```bash
+source .venv/bin/activate
+mcp dev server.py
+```
+
+Isso abre o MCP Inspector no browser, onde você pode chamar cada tool manualmente, ver os parâmetros aceitos e inspecionar as respostas — útil para depurar antes de conectar ao Claude.
+
+**Verificar se as dependências estão instaladas:**
+```bash
+source .venv/bin/activate
+python -c "import mcp; import flask; import google.ads; print('OK')"
+```
+
 ---
 
-## Exemplos de Uso no Claude
+## Como usar com Claude
 
+Com o MCP configurado no Claude Desktop, basta conversar normalmente. O Claude vai chamar as tools automaticamente conforme necessário.
+
+**Relatórios e análises:**
 ```
-"Liste todas as campanhas ativas da conta 123-456-7890"
-"Qual foi o ROAS das campanhas do último mês?"
-"Mostre os termos de busca que geraram mais conversões essa semana"
-"Quais keywords têm Quality Score abaixo de 5?"
-"Compare a performance por device nos últimos 30 dias"
-"Pause a campanha 'Hotel - Branded' — confirme antes de executar"
-"Qual foi o CPA médio de reserva no mês passado?"
+Liste todas as campanhas ativas da conta 123-456-7890
+Qual foi o ROAS das campanhas do último mês?
+Compare a performance por device nos últimos 30 dias
+Mostre a série diária de cliques e custo desta semana
+Qual foi o CPA médio de reserva no mês passado?
 ```
+
+**Palavras-chave e termos de busca:**
+```
+Quais keywords têm Quality Score abaixo de 5?
+Mostre os termos de busca que geraram mais conversões essa semana
+Quais termos de busca tiveram cliques mas zero conversão no último mês?
+```
+
+**Ações de escrita (sempre com confirmação):**
+```
+Pause a campanha 'Hotel - Branded'
+Atualize o budget da campanha 'Search - Genérico' para R$ 150/dia
+Adicione 'grátis' como keyword negativa na campanha 'Hotel - Branded'
+```
+
+Para ações de escrita, o Claude sempre mostra um **preview da ação antes de executar** e pede confirmação explícita. Nada é modificado sem sua aprovação.
 
 ---
 

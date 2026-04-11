@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block title %}Step 3 — OAuth2 — Google Ads MCP Setup{% endblock %}
+
+{% block content %}
+<div class="step-header">
+  <h1>Autorização OAuth2</h1>
+  <p class="step-desc">Autorize o acesso à sua conta Google Ads via OAuth2.</p>
+</div>
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+{% set oauth_done = config.get('refresh_token') %}
+
+<div class="oauth-panel">
+  {% if oauth_done %}
+  <div class="oauth-status oauth-status--ok">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="16" fill="#1a3a2a"/>
+      <path d="M9 16l5 5 9-9" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <strong>Autorizado com sucesso!</strong>
+      <p>Refresh token salvo. Você pode prosseguir para o próximo passo.</p>
+    </div>
+  </div>
+  {% else %}
+  <div class="oauth-status oauth-status--pending">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="16" fill="#1a1a2e"/>
+      <path d="M16 10v6l4 2" stroke="#4285F4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <strong>Aguardando autorização</strong>
+      <p>Clique no botão abaixo para abrir o fluxo OAuth no seu navegador.</p>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="info-box">
+    <strong>O que acontece ao autorizar:</strong>
+    <ul>
+      <li>Você será redirecionado ao Google para fazer login</li>
+      <li>O Google pedirá permissão para acessar sua conta do Google Ads</li>
+      <li>Após a aprovação, um <em>refresh token</em> será salvo localmente no <code>config.json</code></li>
+      <li>Nenhum dado é enviado para servidores externos</li>
+    </ul>
+  </div>
+
+  <div class="actions">
+    <a href="{{ url_for('step', n=2) }}" class="btn btn-ghost">&larr; Voltar</a>
+    {% if oauth_done %}
+      <a href="{{ url_for('step', n=4) }}" class="btn btn-primary">Próximo &rarr;</a>
+      <a href="{{ url_for('oauth_start') }}" class="btn btn-ghost">Re-autorizar</a>
+    {% else %}
+      <a href="{{ url_for('oauth_start') }}" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-right:6px;vertical-align:middle">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" fill="#fff"/>
+        </svg>
+        Autorizar com Google
+      </a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

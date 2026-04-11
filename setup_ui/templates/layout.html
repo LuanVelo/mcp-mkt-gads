@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Google Ads MCP — Setup{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="shell">
+    <header class="top-bar">
+      <div class="logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#4285F4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Google Ads MCP</span>
+      </div>
+      <span class="top-bar-sub">Setup Guiado</span>
+    </header>
+
+    {% if statuses is defined %}
+    <nav class="stepper">
+      {% set labels = ['Credenciais', 'Developer Token', 'OAuth2', 'Customer ID'] %}
+      {% for i in range(4) %}
+        <div class="step-item {{ statuses[i] }}">
+          <div class="step-circle">
+            {% if statuses[i] == 'done' %}
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {% else %}
+              {{ i + 1 }}
+            {% endif %}
+          </div>
+          <span class="step-label">{{ labels[i] }}</span>
+        </div>
+        {% if i < 3 %}
+          <div class="step-connector {{ 'done' if statuses[i] == 'done' else '' }}"></div>
+        {% endif %}
+      {% endfor %}
+    </nav>
+    {% endif %}
+
+    <main class="card">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+      Velo Digital &mdash; Google Ads MCP
+    </footer>
+  </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

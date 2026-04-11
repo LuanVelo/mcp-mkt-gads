@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block title %}Setup Concluído — Google Ads MCP{% endblock %}
+
+{% block content %}
+<div class="success-header">
+  <svg class="success-icon" width="56" height="56" viewBox="0 0 56 56" fill="none">
+    <circle cx="28" cy="28" r="28" fill="#0d2b1f"/>
+    <path d="M16 28l8 8 16-16" stroke="#34d399" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <h1>Setup concluído!</h1>
+  <p>O Google Ads MCP está configurado e pronto para uso com o Claude Desktop.</p>
+</div>
+
+<div class="summary-grid">
+  <div class="summary-item">
+    <span class="summary-label">Conta</span>
+    <span class="summary-value mono">{{ config.get('customer_id', '—') }}</span>
+  </div>
+  {% if config.get('login_customer_id') %}
+  <div class="summary-item">
+    <span class="summary-label">Manager (MCC)</span>
+    <span class="summary-value mono">{{ config.login_customer_id }}</span>
+  </div>
+  {% endif %}
+  <div class="summary-item">
+    <span class="summary-label">Modo</span>
+    <span class="summary-value">{{ 'Conta de Teste' if config.get('test_account') else 'Produção' }}</span>
+  </div>
+  <div class="summary-item">
+    <span class="summary-label">OAuth2</span>
+    <span class="summary-value"><span class="badge badge-ok">Autorizado</span></span>
+  </div>
+</div>
+
+<div class="config-block-section">
+  <h2>Configure o Claude Desktop</h2>
+  <p>Cole o bloco abaixo em <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> e reinicie o Claude Desktop.</p>
+
+  <div class="code-block">
+    <button class="copy-btn" id="copy-btn" onclick="copyConfig()">Copiar</button>
+    <pre id="mcp-config-json">{{ mcp_config_json }}</pre>
+  </div>
+</div>
+
+<div class="actions actions--center">
+  <a href="{{ url_for('step', n=1) }}" class="btn btn-ghost">Reconfigurar</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function copyConfig() {
+    const text = document.getElementById('mcp-config-json').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = 'Copiado!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+{% endblock %}

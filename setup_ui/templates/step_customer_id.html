@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block title %}Step 4 — Customer ID — Google Ads MCP Setup{% endblock %}
+
+{% block content %}
+<div class="step-header">
+  <h1>Customer ID</h1>
+  <p class="step-desc">Informe o ID da conta Google Ads que deseja gerenciar.</p>
+</div>
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+<form method="POST" action="{{ url_for('step', n=4) }}" id="form-step4">
+  <div class="field">
+    <label for="customer_id">Customer ID da conta Google Ads</label>
+    <input
+      id="customer_id"
+      name="customer_id"
+      type="text"
+      class="mono"
+      placeholder="123-456-7890"
+      value="{{ config.get('customer_id', '') }}"
+      autocomplete="off"
+      required
+    />
+    <p class="field-hint">Encontrado no canto superior direito da interface do Google Ads. Formato: <code>xxx-xxx-xxxx</code></p>
+  </div>
+
+  <div class="field">
+    <label for="login_customer_id">
+      Login Customer ID <span class="optional">(opcional — apenas para Manager Account/MCC)</span>
+    </label>
+    <input
+      id="login_customer_id"
+      name="login_customer_id"
+      type="text"
+      class="mono"
+      placeholder="000-000-0000"
+      value="{{ config.get('login_customer_id', '') }}"
+      autocomplete="off"
+    />
+    <p class="field-hint">ID da conta Manager da Velo. Necessário para acessar contas cliente via MCC.</p>
+  </div>
+
+  <div class="test-connection-area">
+    <button type="button" class="btn btn-secondary" id="btn-test">Testar Conexão</button>
+    <div id="test-result" class="test-result"></div>
+  </div>
+
+  <div class="actions">
+    <a href="{{ url_for('step', n=3) }}" class="btn btn-ghost">&larr; Voltar</a>
+    <button type="submit" class="btn btn-primary">Concluir Setup &rarr;</button>
+  </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.getElementById('btn-test').addEventListener('click', async () => {
+    const customerId = document.getElementById('customer_id').value.trim();
+    const resultEl = document.getElementById('test-result');
+
+    if (!customerId) {
+      resultEl.innerHTML = '<span class="badge badge-warn">Preencha o Customer ID primeiro.</span>';
+      return;
+    }
+
+    resultEl.innerHTML = '<span class="badge badge-loading">Testando conexão...</span>';
+
+    try {
+      const resp = await fetch('/test-connection', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customer_id: customerId }),
+      });
+      const data = await resp.json();
+      if (data.ok) {
+        resultEl.innerHTML = `<span class="badge badge-ok">Conectado: <strong>${data.account_name}</strong> (${data.currency})</span>`;
+      } else {
+        resultEl.innerHTML = `<span class="badge badge-error">Erro: ${data.error}</span>`;
+      }
+    } catch (e) {
+      resultEl.innerHTML = `<span class="badge badge-error">Falha na requisição: ${e.message}</span>`;
+    }
+  });
+</script>
+{% endblock %}

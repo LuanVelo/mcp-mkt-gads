@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block title %}Step 2 — Developer Token — Google Ads MCP Setup{% endblock %}
+
+{% block content %}
+<div class="step-header">
+  <h1>Developer Token</h1>
+  <p class="step-desc">Insira o Developer Token da API do Google Ads.</p>
+</div>
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+<div class="info-box">
+  <strong>Como obter o Developer Token:</strong>
+  <ol>
+    <li>Acesse sua conta <strong>Google Ads Manager (MCC)</strong></li>
+    <li>Vá em <strong>Ferramentas &amp; Configurações → API Center</strong></li>
+    <li>Copie o <em>Developer Token</em> exibido na página</li>
+  </ol>
+</div>
+
+<form method="POST" action="{{ url_for('step', n=2) }}">
+  <div class="field">
+    <label for="developer_token">Developer Token</label>
+    <input
+      id="developer_token"
+      name="developer_token"
+      type="text"
+      class="mono"
+      placeholder="dEv3lOp3rT0k3nAqUi"
+      value="{{ config.get('developer_token', '') }}"
+      autocomplete="off"
+      required
+    />
+  </div>
+
+  <div class="field toggle-field">
+    <label class="toggle-label">
+      <input
+        type="checkbox"
+        name="test_account"
+        id="test_account"
+        {{ 'checked' if config.get('test_account') else '' }}
+      />
+      <span class="toggle-track">
+        <span class="toggle-thumb"></span>
+      </span>
+      <span class="toggle-text">Modo <strong>Conta de Teste</strong></span>
+    </label>
+    <p class="field-hint">Ative apenas se estiver usando uma Test Account do Google Ads. Para produção, mantenha desativado.</p>
+  </div>
+
+  <div class="actions">
+    <a href="{{ url_for('step', n=1) }}" class="btn btn-ghost">&larr; Voltar</a>
+    <button type="submit" class="btn btn-primary">Próximo &rarr;</button>
+  </div>
+</form>
+{% endblock %}

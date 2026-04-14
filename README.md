@@ -25,7 +25,9 @@ Este projeto implementa um servidor MCP local em Python que expõe tools do Goog
 - **Python 3.11+**
 - **Conta Google Ads** com acesso à API habilitado
 - **Developer Token** do Google Ads ([como obter →](https://developers.google.com/google-ads/api/docs/get-started/dev-token))
-- **Projeto no Google Cloud** com OAuth2 Desktop App configurado ([como criar →](https://developers.google.com/google-ads/api/docs/oauth/cloud-project))
+- **Projeto no Google Cloud** com:
+  - **Google Ads API habilitada** no projeto ([habilitar →](https://console.cloud.google.com/apis/library/googleads.googleapis.com))
+  - **OAuth2 Desktop App** configurado ([como criar →](https://developers.google.com/google-ads/api/docs/oauth/cloud-project))
 - **Claude Desktop** instalado
 
 ---
@@ -39,7 +41,17 @@ git clone https://github.com/LuanVelo/mcp-mkt-gads.git
 cd mcp-mkt-gads
 ```
 
-### 2. Execute o setup guiado
+### 2. Habilite a Google Ads API no Google Cloud
+
+Antes de rodar o setup, a **Google Ads API precisa estar habilitada** no projeto do Google Cloud que você vai usar para o OAuth:
+
+1. Acesse [console.cloud.google.com/apis/library/googleads.googleapis.com](https://console.cloud.google.com/apis/library/googleads.googleapis.com)
+2. Selecione o projeto correto no seletor do topo
+3. Clique em **"Ativar"**
+
+> **Atenção:** sem essa etapa, todas as chamadas à API retornarão erro de permissão, mesmo com OAuth configurado corretamente.
+
+### 3. Execute o setup guiado
 
 ```bash
 ./setup.sh
@@ -50,7 +62,7 @@ O script vai:
 - Instalar todas as dependências do `requirements.txt`
 - Abrir automaticamente a interface de configuração em `http://localhost:5001`
 
-### 3. Configure via wizard (4 passos)
+### 4. Configure via wizard (4 passos)
 
 Acesse `http://localhost:5001` no browser e siga o wizard:
 
@@ -63,7 +75,7 @@ Acesse `http://localhost:5001` no browser e siga o wizard:
 
 Ao finalizar o passo 4, o wizard exibe o bloco de configuração pronto para colar no Claude Desktop.
 
-### 4. Configure o Claude Desktop
+### 5. Configure o Claude Desktop
 
 Cole o bloco gerado pelo setup em:
 
@@ -87,7 +99,7 @@ Formato do bloco (o setup preenche os caminhos automaticamente):
 
 > **Dica:** rode `pwd` dentro da pasta do projeto para obter o caminho absoluto correto.
 
-### 5. Reinicie o Claude Desktop
+### 6. Reinicie o Claude Desktop
 
 O servidor Google Ads MCP estará disponível na próxima sessão.
 
@@ -249,6 +261,9 @@ Se preferir configurar sem o wizard, crie um `config.json` na raiz do projeto:
 ---
 
 ## Troubleshooting
+
+**Erro `API not enabled` ou `REQUEST_ERROR` ao testar conexão:**
+A Google Ads API não está habilitada no projeto do Google Cloud. Acesse [console.cloud.google.com/apis/library/googleads.googleapis.com](https://console.cloud.google.com/apis/library/googleads.googleapis.com), selecione o projeto correto e clique em **"Ativar"**.
 
 **`config.json` não encontrado ao iniciar:**
 Execute `./setup.sh` novamente para refazer a configuração.

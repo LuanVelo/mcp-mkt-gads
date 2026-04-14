@@ -100,11 +100,17 @@ requests>=2.31.0
 
 O setup é um wizard com 4 passos, rodando em `http://localhost:5001`.
 
+> ⚠️ **Pré-requisito obrigatório antes do wizard:** a **Google Ads API deve estar habilitada**
+> no projeto do Google Cloud. Sem isso, todas as chamadas falharão com erro de permissão,
+> mesmo com OAuth correto.
+> Link direto: https://console.cloud.google.com/apis/library/googleads.googleapis.com
+
 **Passos do wizard:**
 
 **Step 1 — Google Cloud Credentials**
 - Campo: upload ou paste do conteúdo do `credentials.json`
 - Instrução visual com link para o Google Cloud Console
+- Instrução explícita para habilitar a Google Ads API no projeto antes de prosseguir
 - Validação: verifica se o JSON tem `client_id` e `client_secret`
 
 **Step 2 — Developer Token**
@@ -319,12 +325,15 @@ O setup UI gera automaticamente o bloco abaixo para o usuário colar em
 
 ## Contexto de Negócio
 
-Este MCP é usado pela agência **Velo** para gerenciar campanhas de Google Ads
-de clientes hoteleiros (hotéis, pousadas, resorts) no Brasil.
+Este MCP é usado pela agência **Velo** para gerenciar campanhas de Google Ads com IA,
+consultar dados em tempo real e gerar relatórios de performance via linguagem natural.
+
+Os clientes são de segmentos variados: e-commerce, B2B, seguros, aluguel de carro,
+hotelaria e outros verticais.
 
 Isso significa:
 - Moeda sempre em BRL
-- Métricas relevantes: CPA de reserva, ROAS de campanha, CTR de anúncios de hospedagem
+- Métricas relevantes variam por cliente (CPA, ROAS, CTR, conversões)
 - Customer IDs são de contas cliente dentro de uma MCC (Manager Account)
 - O `login_customer_id` é o ID da conta Manager da Velo
 
